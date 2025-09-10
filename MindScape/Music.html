@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindscape Navbar - Music</title>
+    
+    <!-- Include Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3e5f5; /* Light pastel purple background */
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            padding-right: 70px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            height: 80px; /* Keep the navbar height small */
+            position: relative; /* Allow for logo overflow */
+            overflow: visible; /* Ensure large logo is visible */
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin-left: auto; /* Push links to the right */
+        }
+
+        .nav-links li {
+            position: relative; /* To position dropdown menu */
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: rgb(255, 105, 180); /* Set the font color to pink */
+            font-size: 18px;
+            font-weight: bold; /* Make the font bold */
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .nav-links li a:hover:not(.active) {
+            color: darkgreen; /* Keep the text color consistent */
+        }
+
+        .logo {
+            position: absolute;
+            top: 50%; /* Center vertically */
+            padding-left: 30px;
+            padding-top: 15px;
+            transform: translateY(-50%); /* Adjust for larger size */
+        }
+        
+        .logo img {
+            height: 100px; /* Make the logo larger */
+            width: auto; /* Maintain aspect ratio */
+        }
+
+        .profile-link {
+            font-style: italic; /* Profile in logo style */
+            font-weight: bold;
+        }
+
+        .nav-links li .profile-icon {
+            font-size: 20px; /* Adjust size of the icon */
+            vertical-align: middle;
+        }
+
+        /* Dropdown menu styles */
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%; /* Position it just below the parent element */
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .dropdown li {
+            list-style: none;
+        }
+
+        .dropdown li a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: rgb(255, 105, 180); /* Set dropdown link color */
+            font-size: 16px;
+            font-weight: bold; /* Optional */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Show dropdown on hover */
+        .nav-links li:hover .dropdown {
+            display: block;
+        }
+
+        .nav-links li a.active {
+            background-color: #d11890; /* Purple background for active link */
+            color: white; /* White text for active link */
+        }
+
+        .music-section {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 800px;
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .music-section h2 {
+            color: #d11890; /* Dark purple for titles */
+            margin-bottom: 20px;
+        }
+
+        .music-section p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .music-player {
+            width: 100%;
+            height: 50px;
+        }
+
+        .recommendations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .recommendation {
+            background-color: #e7bedd; /* Light pastel purple */
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-weight: bold;
+            color:#d11890;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .recommendation:hover {
+            background-color: #ffd4f4; /* Slightly darker purple */
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="media/logo2.png" alt="Mindscape Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="Chatbot.html">Chat</a></li>
+            <li><a href="Blog.html">Blogs</a></li>
+            <li>
+                <a class="active">Activities</a>
+                <ul class="dropdown">
+                    <li><a href="games.html">Games</a></li>
+                    <li><a href="music.html">Music</a></li> <!-- Highlight "Music" as active -->
+                </ul>
+            </li>
+            <li><a href="About.html">About</a></li>
+            <li><a href="Profile.html" class="profile-link">
+                <i class="fas fa-user profile-icon"></i> <!-- Profile Icon -->
+            </a></li>
+        </ul>
+    </nav>
+
+    <div class="music-section">
+        <img src="media/Lo-fi concept-bro.png" style="height: 300px; width: 250px;" alt="Music">
+        <h2>Calming Music for Relaxation</h2>
+        <p>Discover a selection of soothing music to help you unwind and find inner peace.</p>
+        <audio class="music-player" controls>
+            <source src="media/calm-music.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <br><br>
+        <div class="recommendations">
+            <div class="recommendation" onclick="changeMusic('media/classical.mp3')">Classical Chill</div>
+            <div class="recommendation" onclick="changeMusic('media/ambient.mp3')">Ambient Waves</div>
+            <div class="recommendation" onclick="changeMusic('media/nature.mp3')">Nature Sounds</div>
+            <div class="recommendation" onclick="changeMusic('media/piano.mp3')">Piano Serenity</div>
+            <div class="recommendation" onclick="changeMusic('media/lofi-beats.mp3')">Lo-Fi Beats</div>
+        </div>
+    </div>
+
+    <script>
+        function changeMusic(musicFile) {
+            var audioPlayer = document.querySelector('.music-player');
+            audioPlayer.src = musicFile;
+            audioPlayer.play();
+        }
+    </script>
+
+</body>
+</html>

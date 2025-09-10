@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindscape Login</title>
+
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .login-card {
+            background-color: #e8f5e9; 
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .login-card:hover {
+            transform: scale(1.05); 
+        }
+
+        .login-card h1 {
+            color: #2e7d32; 
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .login-card p {
+            color: #388e3c; 
+            margin-bottom: 30px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .login-form input[type="text"]:focus,
+        .login-form input[type="password"]:focus {
+            box-shadow: 0 0 5px rgba(46, 125, 50, 0.7); 
+        }
+
+        .login-form input[type="text"] {
+            background-color: #ffffff;
+            border: 1px solid #c8e6c9; 
+        }
+
+        .login-form input[type="password"] {
+            background-color: #ffffff;
+            border: 1px solid #a5d6a7; 
+        }
+
+        .login-form button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2e7d32; 
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .login-form button:hover {
+            background-color: #ffffff; 
+            color: #388e3c; 
+        }
+      
+    </style>
+
+<script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    // Your Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyD03D3Q10p7M5qI-Y99xHhAM1c8oNo4-W8",
+        authDomain: "mindscape-d2bb5.firebaseapp.com",
+        databaseURL: "https://mindscape-d2bb5-default-rtdb.firebaseio.com/",
+        projectId: "mindscape-d2bb5",
+        storageBucket: "mindscape-d2bb5.appspot.com",
+        messagingSenderId: "374712714830",
+        appId: "1:374712714830:web:97cbb4b76071ae15b9a51f",
+        measurementId: "G-402PKP15DB"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.querySelector(".login-form");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault(); // Prevent page reload
+
+            // Get input values
+            const email = form.querySelector('input[placeholder="Email"]').value;
+            const password = form.querySelector('input[placeholder="Password"]').value;
+
+            // Reference to the users in Firebase Realtime Database
+            const usersRef = ref(database, "registeredusers");
+
+            get(usersRef)
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const users = snapshot.val();
+                        let isValidUser = false;
+
+                        // Check if the email and password match
+                        for (const key in users) {
+                            const user = users[key];
+                            console.log(`Checking user: ${user.email}`); // Debug log
+
+                            if (user.email === email && user.password === password) {
+                                isValidUser = true;
+
+                                // Store the user's details in sessionStorage (or localStorage)
+                                sessionStorage.setItem("userName", user.name);
+                                sessionStorage.setItem("userEmail", user.email);
+                                sessionStorage.setItem("userPhone", user.phone || "Not Provided");
+                                sessionStorage.setItem("userUsername", user.username);
+                                sessionStorage.setItem("userMembershipDate", user.membershipDate || "Not Available");
+                                sessionStorage.setItem("profileImage", user.profileImage || "media/default-profile.png");
+
+                                console.log("User logged in successfully"); // Debug log
+                                break;
+                            }
+                        }
+
+                        if (isValidUser) {
+                            window.location.href = "homepage.html"; // Redirect to profile page
+                        } else {
+                            alert("Invalid email or password!"); // User not found
+                        }
+                    } else {
+                        alert("No users found in the database!");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching users: ", error); // Log the error for debugging
+                    alert("Error: " + error.message);
+                });
+        });
+    });
+
+</script>
+</head>
+<body>
+    <div class="login-card">
+        <img src="media/Mental health-bro.png" style="height: 200px; width: 200px;" alt="Login Illustration" class="illustration">
+        <h1>Welcome to Mindscape!</h1>
+        <p>Please log in to continue</p>
+        <form class="login-form">
+            <input type="text" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+            <p>Not Registered? <a href="Registration.html">SignUp</a></p>
+        </form>
+    </div>
+</body>
+</html>

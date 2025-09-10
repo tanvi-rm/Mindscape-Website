@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splash Screen with Video</title>
+    <style>
+        /* Splash Screen Styling */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #faf6d2;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    z-index: 1000;
+    animation: fadeOut 5s ease 8s forwards;
+}
+
+/* Video Styling */
+#splash-video {
+    width: 80%; /* Adjust as necessary */
+    max-width: 600px; /* Ensures video does not exceed 600px width */
+    height: auto;
+    /*margin-bottom: 20px;sSpace between video and text */
+    /*border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); */
+}
+
+/* Fade out animation */
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* Main Content */
+#main-content {
+    padding: 20px;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="splash-screen">
+    <video autoplay muted loop id="splash-video">
+        <source src="media/Mindspaces.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<div id="main-content" style="display: none;">
+    <!-- Main website content here -->
+    <h1>Main Website Content</h1>
+</div>
+<script>
+    setTimeout(() => {
+        window.location.href = 'Registration.html';
+    }, 8000);
+</script>
+<script src="script.js"></script>
+</body>
+</html>

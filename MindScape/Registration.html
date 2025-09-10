@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="module">
+        
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getDatabase, ref, push, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+        // Firebase config and initialization
+        const firebaseConfig = {
+            apiKey: "AIzaSyD03D3Q10p7M5qI-Y99xHhAM1c8oNo4-W8",
+            authDomain: "mindscape-d2bb5.firebaseapp.com",
+            databaseURL: "https://mindscape-d2bb5-default-rtdb.firebaseio.com/",
+            projectId: "mindscape-d2bb5",
+            storageBucket: "mindscape-d2bb5.appspot.com",
+            messagingSenderId: "374712714830",
+            appId: "1:374712714830:web:97cbb4b76071ae15b9a51f",
+            measurementId: "G-402PKP15DB"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector(".register-form");
+            form.addEventListener("submit", (e) => {
+                e.preventDefault(); // Prevent page refresh
+
+                const fullName = form.querySelector('input[placeholder="Full Name"]').value;
+                const email = form.querySelector('input[placeholder="Email"]').value;
+                const password = form.querySelector('input[placeholder="Password"]').value;
+                const confirmPassword = form.querySelector('input[placeholder="Confirm Password"]').value;
+
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match!");
+                    return;
+                }
+
+                const usersRef = ref(database, "registeredusers");
+                get(usersRef).then((snapshot) => {
+                    let emailExists = false;
+                    snapshot.forEach((childSnapshot) => {
+                        const userData = childSnapshot.val();
+                        if (userData.email === email) {
+                            emailExists = true;
+                        }
+                    });
+
+                    if (emailExists) {
+                        alert("This email is already registered.");
+                    } else {
+                        push(usersRef, { fullName, email, password })
+                            .then(() => {
+                                // Store user email in localStorage for persistent login
+                                localStorage.setItem("userEmail", email);
+                                alert("Registration successful!");
+                                window.location.href = 'homepage.html';
+                            })
+                            .catch((error) => {
+                                alert("Error: " + error.message);
+                            });
+                    }
+                }).catch((error) => {
+                    alert("Error: " + error.message);
+                });
+            });
+        });
+
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindscape Registration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .register-card {
+            background-color: #e8f5e9; 
+            border-radius: 15px;
+            padding: 40px 40px 0px 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .register-card:hover {
+            transform: scale(1.05); 
+        }
+
+        .register-card h1 {
+            color: #2e7d32; 
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .register-card p {
+            color: #388e3c;
+            margin-bottom: 30px;
+        }
+
+        .register-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .register-form input[type="text"],
+        .register-form input[type="password"],
+        .register-form input[type="email"] {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .register-form input[type="text"]:focus,
+        .register-form input[type="password"]:focus,
+        .register-form input[type="email"]:focus {
+            box-shadow: 0 0 5px rgba(46, 125, 50, 0.7); 
+        }
+
+        .register-form input[type="text"],
+        .register-form input[type="email"] {
+            background-color: #ffffff;
+            border: 1px solid #c8e6c9; 
+        }
+
+        .register-form input[type="password"] {
+            background-color: #ffffff;
+            border: 1px solid #a5d6a7; 
+        }
+
+        .register-form button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2e7d32;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .register-form button:hover {
+            background-color: #ffffff; 
+            color: #388e3c; 
+        }
+
+        #sign-in-link{
+            text-decoration: underline;
+            color: #28722b; 
+            font-size: 16px;
+        }
+
+        #sign-in-link:hover{
+            color:#1f6321;
+        }
+
+        .sign-in-link-p{
+            color: #28722b; 
+            font-size: 16px;
+        }
+    </style>    
+</head>
+<body>
+    <div class="register-card">
+        <h1>Join Mindscape!</h1>
+        <p>Create an account to get started</p>
+        <form class="register-form">
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <input type="password" placeholder="Confirm Password" required>
+            <button type="submit">Register</button>
+            <p class="sign-in-link-p">Already have an account? <a href="login.html" id="sign-in-link">Sign-In</a></p>
+        </form>
+    </div>
+</body>
+</html>
