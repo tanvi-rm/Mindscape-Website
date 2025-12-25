@@ -105,8 +105,8 @@ Mindscape focuses on providing multiple features that collectively support menta
 
 ---
 
-### 👤 User Profile / Dashboard
-![Profile](screenshots/profile.png)
+### 👤 User Registration Section
+![Profile](screenshots/signup.png)
 
 ---
 
